@@ -1,178 +1,572 @@
-# VibeGuard 🛡️
+# 🛡️ VibeGuard
 
-> You vibed the code into existence. VibeGuard makes sure it doesn't blow up in production.
+<div align="center">
 
-VibeGuard is an open-source AI code auditor built for developers who use AI tools to
-build fast. It scans your entire codebase — not just for syntax errors, but for security
-vulnerabilities, broken API usage, deployment misconfigs, and logic bugs — then gives you
-an interactive map of everything it found.
+### **Autonomous Reliability & AI Code Auditor**
 
-No more shipping code you don't fully understand.
+*"You vibe the code into existence. VibeGuard makes sure it doesn't blow up in production."*
 
 ---
 
-## Why VibeGuard Exists
-
-AI coding tools are magic. You describe a feature, you get working code, you ship it.
-But "working" and "production-safe" are two very different things.
-
-Vibe-coded projects tend to silently carry:
-
-- 🔓 Security holes no one thought to ask the AI about
-- 🐛 Bugs hiding in edge cases, async logic, and untested paths
-- ⚡ APIs called with wrong methods, missing auth, or no error handling
-- 💥 Deployment configs that pass locally but fail in prod
-- 🌀 A codebase nobody — including you — fully understands
-
-VibeGuard is the layer between "it works on my machine" and "it's safe to ship."
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.10+-green)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
+![Gemini](https://img.shields.io/badge/Gemini-AI-orange)
+![LangGraph](https://img.shields.io/badge/LangGraph-MultiAgent-red)
+![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen)
 
 ---
 
-## What It Does
+**An AI-native platform that continuously audits code, detects production failures, reasons over historical fixes, and autonomously proposes safe remediations through a multi-agent architecture.**
+
+</div>
+
+---
+
+# 📑 Table of Contents
+
+* Overview
+* Why VibeGuard?
+* Key Features
+* System Architecture
+* Agent Workflow
+* Memory-Augmented Reasoning
+* Tech Stack
+* Folder Structure
+* Screenshots
+* Installation
+* Configuration
+* Running the Project
+* API Overview
+* Roadmap
+* Contributing
+* License
+
+---
+
+# 🚀 Overview
+
+Modern software teams ship features at incredible speed.
+
+Unfortunately, production failures still require engineers to manually investigate logs, search documentation, inspect dashboards, identify root causes, and apply fixes.
+
+VibeGuard automates this entire reliability workflow.
+
+Instead of merely detecting issues, it:
+
+* detects failures
+* diagnoses root causes
+* retrieves similar historical incidents
+* generates safe remediation plans
+* requests human approval
+* executes fixes
+* validates success
+* learns from every incident
+
+Every successful repair becomes organizational knowledge stored in a semantic memory database, allowing the system to continuously improve.
+
+---
+
+# 🎯 Why VibeGuard?
+
+Traditional observability platforms answer:
+
+> **"What failed?"**
+
+AI coding assistants answer:
+
+> **"Here's a possible fix."**
+
+VibeGuard answers:
+
+> **"I know why this failed because I've seen it before. Here's the safest fix. Approve it and I'll execute it."**
+
+---
+
+# ✨ Key Features
+
+## 🔍 AI Static Code Auditor
+
+* Deep AST parsing
+* Dependency graph analysis
+* API misuse detection
+* Security vulnerability scanning
+* Configuration drift detection
+* Interactive architecture visualization
+
+---
+
+## 🚨 Autonomous Incident Detection
+
+Continuously monitors:
+
+* application logs
+* exceptions
+* latency spikes
+* CPU usage
+* memory usage
+* failed deployments
+* infrastructure health
+
+---
+
+## 🧠 Fix-Memory RAG
+
+Unlike traditional RAG systems that embed entire codebases, VibeGuard stores only:
+
+* Incident fingerprint
+* Root cause
+* Successful remediation
+* Validation metrics
+
+This drastically reduces:
+
+* token usage
+* latency
+* hallucinations
+
+while improving retrieval quality.
+
+---
+
+## 🤖 Multi-Agent Reliability Engine
+
+Four specialized AI agents collaborate exactly like a real Site Reliability Engineering (SRE) team.
+
+### 🐛 Monitor Agent
+
+Responsible for:
+
+* anomaly detection
+* metrics collection
+* log aggregation
+* incident creation
+
+---
+
+### 🔍 Diagnosis Agent
+
+Responsible for:
+
+* root cause analysis
+* semantic retrieval
+* dependency inspection
+* environment validation
+
+---
+
+### ⚡ Action Agent
+
+Responsible for:
+
+* remediation planning
+* rollback generation
+* infrastructure patching
+* configuration repair
+
+---
+
+### ✅ Verification Agent
+
+Responsible for:
+
+* execution
+* health verification
+* rollback if required
+* memory update
+
+---
+
+# 🏗 System Architecture
 
 ```
-Your Code (file · repo · ZIP)
-         │
-         ▼
-   Analysis Engine
-   ├── Static Analysis   (AST · CFG · Call Graphs)
-   └── AI Analysis       (LLM + Graph Neural Network)
-         │
-         ├── 🐛 Bug Predictor
-         ├── 🔒 Security Scanner
-         ├── ⚡ API Risk Auditor
-         └── 🚀 Deployment Checker
-         │
-         ▼
-   Output
-   ├── Risk Dashboard
-   ├── REST / Webhook API
-   └── Interactive Codebase Flowchart
+                     Developer
+                         │
+                         ▼
+               Source Code / Deployment
+                         │
+         ┌───────────────┴──────────────┐
+         │                              │
+         ▼                              ▼
+
+ Static Code Analysis            Production Monitoring
+
+         │                              │
+         └───────────────┬──────────────┘
+                         ▼
+
+                  Monitor Agent
+                         │
+                         ▼
+                 Diagnosis Agent
+                         │
+          Semantic Search (pgvector)
+                         │
+                         ▼
+                Historical Fix Memory
+                         │
+                         ▼
+                  Action Agent
+                         │
+                         ▼
+
+             Human Approval Dashboard
+
+                         │
+                         ▼
+               Verification Agent
+                         │
+                         ▼
+               Execute + Validate
+                         │
+                         ▼
+           Store Successful Fix in Memory
 ```
 
-### 🐛 Bug Predictor
-Finds code paths likely to cause runtime failures using ML models and AST pattern
-analysis. Catches null dereferences, async race conditions, unhandled promise rejections,
-and off-by-one errors before they become 3am incidents.
+---
 
-### 🔒 Security Scanner
-Deep SAST powered by LLM reasoning. Goes beyond regex rules to understand context —
-so it catches SQL/XSS/CMD injections, hardcoded secrets, broken auth patterns, and
-insecure data exposure that simple scanners miss.
+# 🔄 Incident Workflow
 
-### ⚡ API Risk Auditor
-Checks every API interaction in your code against the OpenAPI spec and security best
-practices. Flags missing auth headers, wrong HTTP methods, unhandled 429s, and
-unvalidated responses.
-
-### 🚀 Deployment Checker
-Audits your Dockerfiles, CI/CD pipelines, `.env` files, and IaC configs for
-prod-breaking issues. Catches exposed secrets, missing health checks, insecure cloud
-policies, and hardcoded environment assumptions.
+```
+Production Error
+       │
+       ▼
+Collect Logs
+       │
+       ▼
+Root Cause Analysis
+       │
+       ▼
+Retrieve Similar Incident
+       │
+       ▼
+Generate Safe Fix
+       │
+       ▼
+Human Approval
+       │
+       ▼
+Execute Remediation
+       │
+       ▼
+Verify Success
+       │
+       ▼
+Store Knowledge
+```
 
 ---
 
-## The Output
+# 🧠 Memory-Augmented Reasoning
 
-Everything lands in one place:
+Traditional LLM pipelines often suffer from **context bloat** by sending massive logs and entire repositories to the model.
 
-- **Risk Dashboard** — all findings ranked by severity, filterable by module, with
-  drill-down detail on every issue
-- **Interactive Codebase Flowchart** — a visual map of how your entire project connects.
-  Finally understand what you actually built.
-- **REST / Webhook API** — plug VibeGuard into your CI/CD pipeline so it runs
-  automatically on every pull request
+VibeGuard introduces **Fix-Memory RAG**.
 
----
+### Incident Fingerprinting
 
-## Tech Stack
+Every incident is transformed into:
 
-| Layer | Tools |
-|---|---|
-| Parsing | Tree-sitter · NetworkX · Joern |
-| Static Analysis | Semgrep · Bandit · ESLint |
-| AI / ML | LLM API · PyTorch Geometric · LangChain |
-| Backend | FastAPI · Celery · Redis · PostgreSQL |
-| Frontend | React · TypeScript · React Flow · Recharts |
-| DevOps | Docker · GitHub Actions · Webhook API |
+* stack trace hash
+* exception type
+* endpoint
+* service
+* deployment metadata
+* runtime metrics
 
 ---
 
-## Project Structure
+### Semantic Retrieval
+
+Instead of searching raw logs, the fingerprint queries a **pgvector** database containing historical:
+
+```
+Problem
+
+↓
+
+Root Cause
+
+↓
+
+Verified Solution
+
+↓
+
+Outcome
+```
+
+---
+
+### Context Minimization
+
+Only the most relevant remediation is supplied to the LLM.
+
+Benefits:
+
+* lower latency
+* fewer hallucinations
+* lower token costs
+* faster reasoning
+
+---
+
+### Continuous Learning
+
+Every successful remediation becomes searchable organizational knowledge.
+
+The more incidents solved...
+
+the smarter the platform becomes.
+
+---
+
+# 🛠 Tech Stack
+
+| Layer           | Technologies                              |
+| --------------- | ----------------------------------------- |
+| AI Agents       | LangGraph, Gemini ADK                     |
+| LLM             | Gemini Pro, Gemini Ultra, Groq Llama3-70B |
+| Backend         | FastAPI                                   |
+| Frontend        | Next.js, React                            |
+| Visualization   | React Flow, Recharts                      |
+| Static Analysis | Tree-sitter, Semgrep, Bandit, ESLint      |
+| Vector Database | PostgreSQL + pgvector                     |
+| Local Storage   | SQLite                                    |
+| Cache           | Redis                                     |
+| Async Jobs      | Celery                                    |
+| Deployment      | Docker, Cloud Run                         |
+
+---
+
+# 📂 Project Structure
 
 ```
 vibeguard/
-├── ingestion/          # Code input handlers (file, ZIP, GitHub URL)
-├── parser/             # AST, CFG, and call graph generation
-├── analysis/
-│   ├── static/         # Rule-based scanners (Semgrep, Bandit, ESLint)
-│   ├── ai/             # LLM reasoning pipeline
-│   └── gnn/            # Graph Neural Network models
-├── modules/
-│   ├── bug_predictor/
-│   ├── security_scanner/
-│   ├── api_auditor/
-│   └── deployment_checker/
-├── api/                # FastAPI REST + webhook endpoints
-├── dashboard/          # React frontend + codebase flowchart
-├── workers/            # Celery async job queue
-└── db/                 # PostgreSQL models + migrations
+
+apps/
+│
+├── backend/
+├── frontend/
+
+packages/
+│
+├── agents/
+├── database/
+
+analysis/
+│
+├── static/
+└── ai/
+
+parser/
+
+workers/
+
+ingestion/
+
+docker-compose.yml
 ```
 
 ---
 
-## Getting Started
+# 📸 Screenshots
+
+> Replace these placeholders with actual screenshots.
+
+```
+Dashboard
+
+Risk Assessment
+
+Architecture Flow
+
+Code Graph
+
+Incident Timeline
+
+Approval Console
+```
+
+---
+
+# ⚙ Installation
+
+## Clone Repository
 
 ```bash
-# Clone the repo
-git clone https://github.com/your-username/vibeguard.git
+git clone https://github.com/yourusername/vibeguard.git
+
 cd vibeguard
-
-# Start all services
-docker-compose up -d
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Install frontend dependencies
-cd dashboard && npm install
-
-# Run the dev server
-uvicorn api.main:app --reload
 ```
 
-Then open `http://localhost:3000`, drop in a file or GitHub URL, and let it rip.
+---
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+Backend
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## Roadmap
+## Configure Environment
 
-| Phase | Timeline | What Gets Built |
-|---|---|---|
-| Phase 1 | Weeks 1–3 | Code ingestion · AST parsing · Graph generation |
-| Phase 2 | Weeks 4–7 | Static scanners · LLM integration · API + Deploy checkers |
-| Phase 3 | Weeks 8–10 | GNN training · AI signal merging · Risk scoring |
-| Phase 4 | Weeks 11–13 | Dashboard · Flowchart · REST API · Auth + multi-project |
+```
+DATABASE_URL=
 
----
+GROQ_API_KEY=
 
-## Contributing
+GOOGLE_API_KEY=
 
-VibeGuard is early and moving fast. Contributions are welcome.
+REDIS_URL=
 
-1. Fork the repo
-2. Create your branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'add: your feature'`)
-4. Push and open a PR
-
-For big changes, open an issue first so we can talk through the approach.
+NEXT_PUBLIC_API_URL=
+```
 
 ---
 
-## License
+## Start Development
 
-MIT — see [LICENSE](LICENSE) for details.
+```bash
+npm run dev
+```
+
+Backend
+
+```bash
+uvicorn main:app --reload
+```
 
 ---
 
-*Built for developers who ship fast and want to sleep at night.*
+Frontend
+
+```
+http://localhost:3005
+```
+
+Backend
+
+```
+http://localhost:8000
+```
+
+---
+
+# 🌐 API Overview
+
+| Endpoint       | Description          |
+| -------------- | -------------------- |
+| POST /scan     | Static code analysis |
+| POST /upload   | Upload repository    |
+| GET /incidents | Retrieve incidents   |
+| POST /diagnose | Root cause analysis  |
+| POST /approve  | Human approval       |
+| POST /execute  | Execute remediation  |
+
+---
+
+# 📊 Business Value
+
+## Reduce MTTR
+
+Hours → Seconds
+
+---
+
+## Reduce Token Cost
+
+Historical retrieval instead of full-context prompting.
+
+---
+
+## Improve Reliability
+
+Every production incident strengthens future reasoning.
+
+---
+
+## Human Safety
+
+No production action executes without explicit approval.
+
+---
+
+# 🚀 Future Roadmap
+
+* Kubernetes integration
+* AWS CloudWatch connector
+* Azure Monitor support
+* Grafana plugin
+* Slack notifications
+* GitHub PR comments
+* Auto-generated postmortems
+* Kubernetes auto-remediation
+* AI deployment risk prediction
+* Multi-cloud support
+
+---
+
+# 🤝 Contributing
+
+Contributions are always welcome.
+
+```
+Fork
+
+↓
+
+Create Feature Branch
+
+↓
+
+Commit Changes
+
+↓
+
+Push Branch
+
+↓
+
+Open Pull Request
+```
+
+---
+
+# 📄 License
+
+Licensed under the MIT License.
+
+---
+
+# 🙌 Acknowledgements
+
+Built using
+
+* LangGraph
+* Gemini
+* FastAPI
+* Next.js
+* PostgreSQL
+* pgvector
+* Tree-sitter
+* Semgrep
+* React Flow
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project interesting, consider giving it a star!
+
+**Built for developers who ship fast and want to sleep at night.**
+
+</div>
