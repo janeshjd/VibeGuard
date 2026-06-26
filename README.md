@@ -368,27 +368,6 @@ ingestion/
 
 docker-compose.yml
 ```
-
----
-
-# 📸 Screenshots
-
-> Replace these placeholders with actual screenshots.
-
-```
-Dashboard
-
-Risk Assessment
-
-Architecture Flow
-
-Code Graph
-
-Incident Timeline
-
-Approval Console
-```
-
 ---
 
 # ⚙ Installation
@@ -450,13 +429,13 @@ uvicorn main:app --reload
 Frontend
 
 ```
-http://localhost:3005
+https://vibeguard-nine.vercel.app/
 ```
 
 Backend
 
 ```
-http://localhost:8000
+https://vibeguardbackend.onrender.com
 ```
 
 ---
